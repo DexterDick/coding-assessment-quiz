@@ -2,6 +2,9 @@
 
 :root {
   --font-family: "Roboto", sans-serif;
+  --color-purple: #351c75;
+  --color-light-purple: #b54be5;
+  --color-white: #ffffff;
 }
 
 *,
@@ -31,7 +34,8 @@ body {
 
 main {
   width: 100%;
-  max-width: 50%;
+  max-width: 80%;
+  height: 70vh;
   margin: 10rem auto 0 auto;
 }
 a {
@@ -49,4 +53,33 @@ header {
 
 h1 {
   text-align: center;
+  font-size: 3rem;
+}
+
+p {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+.high-scores {
+  color: var(--color-light-purple);
+}
+
+.btn {
+  background-color: #351c75;
+  color: #ffffff;
+  font-size: 1.3rem;
+
+  border-radius: 8px;
+}
+
+.btn-start {
+  display: inline-block;
+  margin-top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  padding: 0.8rem 1.5rem;
 }
