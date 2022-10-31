@@ -13,8 +13,6 @@
   margin: 0;
   padding: 0;
   box-sizing: inherit;
-  /* border for testing only remoe later   */
-  border: 1px solid black;
 }
 
 html {
@@ -30,6 +28,7 @@ body {
   width: 100%;
   max-width: 1440px;
   margin: 3rem auto 0 auto;
+  border: 1px solid black;
 }
 
 main {
