@@ -73,11 +73,25 @@ timeCountEL.textContent = count;
 function startQuiz() {
   let questionCount = 0;
   start = true;
+  const intervalID = setInterval(startTimer, 1000);
+
+  function startTimer() {
+    count += 1;
+    timeCountEL.textContent = count;
+    if (count === 60) {
+      clearInterval(intervalID);
+
+      // End test and show score
+    }
+  }
+
   if (start) {
     console.log("Quiz started");
 
     // load first question in array:
     loadQueston(questionCount);
+    const olEL = document.querySelector("ol");
+    olEL.addEventListener("click", checkAnswer);
   }
 }
 
@@ -88,15 +102,22 @@ function loadQueston(questionNumber) {
   const olEL = document.createElement("ol");
 
   mainEL.appendChild(olEL);
-  for (ans in quizQuestions[questionNumber].answers) {
+  for ([key, ans] of Object.entries(quizQuestions[questionNumber].answers)) {
     const liEL = document.createElement("li");
     const aEL = document.createElement("a");
     aEL.setAttribute("href", "#");
-    aEL.innerText = quizQuestions[questionNumber].answers[ans];
+    aEL.setAttribute("data-key", key);
+    aEL.innerText = ans;
     liEL.appendChild(aEL);
     olEL.appendChild(liEL);
+  }
+}
 
-    console.log(quizQuestions[questionNumber].answers[ans]);
+function checkAnswer(event) {
+  event.preventDefault();
+  if (event.target.nodeName === "A") {
+    // if (event.target.dataset.key === );
+    console.log("good");
   }
 }
 
