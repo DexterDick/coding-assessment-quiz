@@ -91,7 +91,9 @@ function startQuiz() {
     // load first question in array:
     loadQueston(questionCount);
     const olEL = document.querySelector("ol");
-    olEL.addEventListener("click", checkAnswer);
+    olEL.addEventListener("click", function (e) {
+      checkAnswer(e, questionCount);
+    });
   }
 }
 
@@ -113,11 +115,29 @@ function loadQueston(questionNumber) {
   }
 }
 
-function checkAnswer(event) {
+function checkAnswer(event, questionCount) {
+  const hrEL = document.createElement("hr");
+  const h2El = document.createElement("h2");
+
   event.preventDefault();
   if (event.target.nodeName === "A") {
-    // if (event.target.dataset.key === );
-    console.log("good");
+    if (
+      Number(event.target.dataset.key) ===
+      Number(quizQuestions[questionCount].correctAnswer)
+    ) {
+      console.log("good answer");
+      mainEL.appendChild(hrEL);
+      h2El.innerText = "Correct!";
+      mainEL.appendChild(h2El);
+    } else {
+      console.log("wrong Anawer");
+      mainEL.appendChild(hrEL);
+      h2El.innerText = "Wrong!";
+      mainEL.appendChild(h2El);
+      console.log(
+        `test: ${quizQuestions[questionCount].correctAnswer} event: ${event.target.dataset.key}`
+      );
+    }
   }
 }
 
