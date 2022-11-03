@@ -5,54 +5,58 @@ const mainEL = document.querySelector("main");
 
 const quizQuestions = [
   {
-    question: "1 Commonly used data types include",
+    question: "A loop that never ends is referred to as a(n)_________.",
     answers: {
-      1: " abc",
-      2: " def",
-      3: "ghi",
-      4: "jkl",
-    },
-    correctAnswer: 1,
-  },
-  {
-    question: " 2 Commonly used data types include",
-    answers: {
-      1: " dex",
-      2: " def",
-      3: "ghi",
-      4: "sam",
+      1: "While loop",
+      2: "Infinite loop",
+      3: "Recursive loop",
+      4: "for loop",
     },
     correctAnswer: 2,
   },
   {
-    question: " 3Commonly used data types include",
+    question:
+      "_______ is the process of finding errors and fixing them within a program.",
     answers: {
-      1: " abc",
-      2: " def",
-      3: "ghi",
-      4: "jkl",
+      1: "Compiling",
+      2: "Executing",
+      3: "Debugging",
+      4: "Scanning",
     },
     correctAnswer: 3,
   },
   {
-    question: " 4 Commonly used data types include",
+    question:
+      "Which of the following keywords is used to define a variable in Javascript?",
     answers: {
-      1: " abc",
-      2: " def",
-      3: "ghi",
-      4: "jkl",
+      1: "var",
+      2: "let",
+      3: "Both A and B",
+      4: "None of the above",
+    },
+    correctAnswer: 3,
+  },
+  {
+    question:
+      "Which of the following methods is used to access HTML elements using Javascript?",
+    answers: {
+      1: "getElementbyId()",
+      2: "getElementsByClassName()",
+      3: "none of the above",
+      4: "Both A and B",
     },
     correctAnswer: 4,
   },
   {
-    question: " 5 Commonly used data types include",
+    question:
+      "Which function is used to serialize an object into a JSON string in Javascript_____?",
     answers: {
-      1: " abc",
-      2: " def",
-      3: "ghi",
-      4: "jkl",
+      1: "stringify()",
+      2: "parse()",
+      3: "convert",
+      4: "None of the above",
     },
-    correctAnswer: 5,
+    correctAnswer: 1,
   },
 ];
 
@@ -100,7 +104,12 @@ function startQuiz() {
 }
 
 function loadQueston(questionNumber) {
-  questionEL.innerText = quizQuestions[questionNumber].question;
+  if (quizQuestions.length !== questionNumber) {
+    questionEL.innerText = quizQuestions[questionNumber].question;
+  } else {
+    questionEL.innerText = "All Done";
+    return;
+  }
 
   const olEL = document.createElement("ol");
   olEL.addEventListener("click", function (e) {
@@ -129,7 +138,7 @@ function checkAnswer(event, questionCount) {
       Number(event.target.dataset.key) ===
       Number(quizQuestions[questionCount].correctAnswer)
     ) {
-      console.log("good answer");
+      // correct answer
       mainEL.appendChild(hrEL);
       h2El.innerText = "Correct!";
       mainEL.appendChild(h2El);
@@ -139,11 +148,16 @@ function checkAnswer(event, questionCount) {
         h2El.remove();
 
         // Go to next question
-        questionCount += 1;
-        document.querySelectorAll("li").forEach(function (el) {
-          el.remove();
-        });
-        loadQueston(questionCount);
+
+        document.querySelector("ol").remove();
+
+        if (questionCount <= quizQuestions.length) {
+          // questionCount += 1;
+          loadQueston(questionCount);
+        } else {
+          // end test
+          endTest();
+        }
       }, 1000);
     } else {
       // wrong answer
@@ -155,14 +169,26 @@ function checkAnswer(event, questionCount) {
         h2El.remove();
 
         // Go to next question
-        questionCount += 1;
-        document.querySelectorAll("li").forEach(function (el) {
-          el.remove();
-        });
-        loadQueston(questionCount);
+
+        document.querySelector("ol").remove();
+        debugger;
+
+        if (questionCount <= quizQuestions.length) {
+          // questionCount += 1;
+          // continue quiz;
+          loadQueston(questionCount);
+        } else {
+          // end quiz
+          endTest();
+        }
       }, 1000);
     }
+    questionCount += 1;
   }
+}
+
+function endTest() {
+  h2El.textContent = "All Done!";
 }
 
 startQuiz_btn.addEventListener("click", startQuiz);
