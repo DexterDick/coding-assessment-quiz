@@ -95,11 +95,6 @@ function startQuiz() {
     document.querySelector(".btn-start").remove();
     // load first question in array:
     loadQueston(questionCount);
-
-    // const olEL = document.querySelector("ol");
-    // olEL.addEventListener("click", function (e) {
-    //   checkAnswer(e, questionCount);
-    // });
   }
 }
 
@@ -129,66 +124,35 @@ function loadQueston(questionNumber) {
 }
 
 function checkAnswer(event, questionCount) {
-  const hrEL = document.createElement("hr");
-  const h2El = document.createElement("h2");
-
   event.preventDefault();
   if (event.target.nodeName === "A") {
     if (
       Number(event.target.dataset.key) ===
       Number(quizQuestions[questionCount].correctAnswer)
     ) {
-      // correct answer
-      mainEL.appendChild(hrEL);
-      h2El.innerText = "Correct!";
-      mainEL.appendChild(h2El);
-
-      setTimeout(function () {
-        hrEL.remove();
-        h2El.remove();
-
-        // Go to next question
-
-        document.querySelector("ol").remove();
-
-        if (questionCount <= quizQuestions.length) {
-          // questionCount += 1;
-          loadQueston(questionCount);
-        } else {
-          // end test
-          endTest();
-        }
-      }, 1000);
+      nextQuestion("Correct!", questionCount);
     } else {
-      // wrong answer
-      mainEL.appendChild(hrEL);
-      h2El.innerText = "Wrong!";
-      mainEL.appendChild(h2El);
-      setTimeout(function () {
-        hrEL.remove();
-        h2El.remove();
-
-        // Go to next question
-
-        document.querySelector("ol").remove();
-        debugger;
-
-        if (questionCount <= quizQuestions.length) {
-          // questionCount += 1;
-          // continue quiz;
-          loadQueston(questionCount);
-        } else {
-          // end quiz
-          endTest();
-        }
-      }, 1000);
+      nextQuestion("Wrong!", questionCount);
     }
-    questionCount += 1;
   }
 }
 
-function endTest() {
-  h2El.textContent = "All Done!";
+function nextQuestion(answer, questionCount) {
+  const hrEL = document.createElement("hr");
+  const h2El = document.createElement("h2");
+  mainEL.appendChild(hrEL);
+  h2El.innerText = answer;
+  mainEL.appendChild(h2El);
+  setTimeout(function () {
+    hrEL.remove();
+    h2El.remove();
+    // Go to next question
+
+    document.querySelector("ol").remove();
+
+    loadQueston(questionCount);
+  }, 1000);
+  questionCount += 1;
 }
 
 startQuiz_btn.addEventListener("click", startQuiz);
