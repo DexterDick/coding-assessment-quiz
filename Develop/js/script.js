@@ -5,7 +5,7 @@ const mainEL = document.querySelector("main");
 
 const quizQuestions = [
   {
-    question: "Commonly used data types include",
+    question: "1 Commonly used data types include",
     answers: {
       1: " abc",
       2: " def",
@@ -15,17 +15,17 @@ const quizQuestions = [
     correctAnswer: 1,
   },
   {
-    question: "Commonly used data types include",
+    question: " 2 Commonly used data types include",
     answers: {
-      1: " abc",
+      1: " dex",
       2: " def",
       3: "ghi",
-      4: "jkl",
+      4: "sam",
     },
     correctAnswer: 2,
   },
   {
-    question: "Commonly used data types include",
+    question: " 3Commonly used data types include",
     answers: {
       1: " abc",
       2: " def",
@@ -35,7 +35,7 @@ const quizQuestions = [
     correctAnswer: 3,
   },
   {
-    question: "Commonly used data types include",
+    question: " 4 Commonly used data types include",
     answers: {
       1: " abc",
       2: " def",
@@ -45,7 +45,7 @@ const quizQuestions = [
     correctAnswer: 4,
   },
   {
-    question: "Commonly used data types include",
+    question: " 5 Commonly used data types include",
     answers: {
       1: " abc",
       2: " def",
@@ -87,21 +87,25 @@ function startQuiz() {
 
   if (start) {
     console.log("Quiz started");
-
+    document.querySelector("main p").remove();
+    document.querySelector(".btn-start").remove();
     // load first question in array:
     loadQueston(questionCount);
-    const olEL = document.querySelector("ol");
-    olEL.addEventListener("click", function (e) {
-      checkAnswer(e, questionCount);
-    });
+
+    // const olEL = document.querySelector("ol");
+    // olEL.addEventListener("click", function (e) {
+    //   checkAnswer(e, questionCount);
+    // });
   }
 }
 
 function loadQueston(questionNumber) {
   questionEL.innerText = quizQuestions[questionNumber].question;
-  document.querySelector("main p").remove();
-  document.querySelector(".btn-start").remove();
+
   const olEL = document.createElement("ol");
+  olEL.addEventListener("click", function (e) {
+    checkAnswer(e, questionNumber);
+  });
 
   mainEL.appendChild(olEL);
   for ([key, ans] of Object.entries(quizQuestions[questionNumber].answers)) {
@@ -129,14 +133,34 @@ function checkAnswer(event, questionCount) {
       mainEL.appendChild(hrEL);
       h2El.innerText = "Correct!";
       mainEL.appendChild(h2El);
+
+      setTimeout(function () {
+        hrEL.remove();
+        h2El.remove();
+
+        // Go to next question
+        questionCount += 1;
+        document.querySelectorAll("li").forEach(function (el) {
+          el.remove();
+        });
+        loadQueston(questionCount);
+      }, 1000);
     } else {
-      console.log("wrong Anawer");
+      // wrong answer
       mainEL.appendChild(hrEL);
       h2El.innerText = "Wrong!";
       mainEL.appendChild(h2El);
-      console.log(
-        `test: ${quizQuestions[questionCount].correctAnswer} event: ${event.target.dataset.key}`
-      );
+      setTimeout(function () {
+        hrEL.remove();
+        h2El.remove();
+
+        // Go to next question
+        questionCount += 1;
+        document.querySelectorAll("li").forEach(function (el) {
+          el.remove();
+        });
+        loadQueston(questionCount);
+      }, 1000);
     }
   }
 }
