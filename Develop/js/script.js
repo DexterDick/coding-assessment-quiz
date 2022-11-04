@@ -1,7 +1,16 @@
 const startQuiz_btn = document.querySelector(".btn-start");
+const submitBtn = document.querySelector("input");
+console.log(submitBtn);
 const questionEL = document.querySelector("h1");
 const timeCountEL = document.querySelector(".timeCount");
 const mainEL = document.querySelector("main");
+const hrEL = document.createElement("hr");
+const formEL = document.createElement("form");
+const divEL = document.createElement("div");
+const divEL2 = document.createElement("div");
+const labelEL = document.createElement("label");
+const inputEL = document.createElement("input");
+const inputEL2 = document.createElement("input");
 
 const quizQuestions = [
   {
@@ -61,10 +70,9 @@ const quizQuestions = [
 ];
 
 // Check if quiz is started
+let intervalID;
 let start = false;
-let count = 0;
-
-timeCountEL.textContent = count;
+let count = 60;
 
 // 1. show landing page  set timer to zero
 // 2.  start quiz when start quiz button is clicked
@@ -77,14 +85,15 @@ timeCountEL.textContent = count;
 function startQuiz() {
   let questionCount = 0;
   start = true;
-  const intervalID = setInterval(startTimer, 1000);
+  intervalID = setInterval(startTimer, 1000);
 
   function startTimer() {
-    count += 1;
+    count -= 1;
     timeCountEL.textContent = count;
-    if (count === 60) {
+    if (count === 0) {
       clearInterval(intervalID);
-
+      document.querySelector("ol").remove();
+      endQuiz();
       // End test and show score
     }
   }
@@ -102,7 +111,9 @@ function loadQueston(questionNumber) {
   if (quizQuestions.length !== questionNumber) {
     questionEL.innerText = quizQuestions[questionNumber].question;
   } else {
-    questionEL.innerText = "All Done";
+    clearInterval(intervalID);
+    endQuiz();
+
     return;
   }
 
@@ -132,13 +143,14 @@ function checkAnswer(event, questionCount) {
     ) {
       nextQuestion("Correct!", questionCount);
     } else {
+      // wrong answer remove time -5 from score
+      count -= 5;
       nextQuestion("Wrong!", questionCount);
     }
   }
 }
 
 function nextQuestion(answer, questionCount) {
-  const hrEL = document.createElement("hr");
   const h2El = document.createElement("h2");
   mainEL.appendChild(hrEL);
   h2El.innerText = answer;
@@ -146,13 +158,41 @@ function nextQuestion(answer, questionCount) {
   setTimeout(function () {
     hrEL.remove();
     h2El.remove();
-    // Go to next question
-
     document.querySelector("ol").remove();
-
+    // Go to next question
     loadQueston(questionCount);
   }, 1000);
   questionCount += 1;
 }
 
+function endQuiz() {
+  questionEL.innerText = "All Done";
+  const pEL = document.createElement("p");
+  pEL.innerText = `Your final sore is ${count}.`;
+  mainEL.appendChild(pEL);
+  mainEL.appendChild(hrEL);
+  labelEL.setAttribute("for", "initials");
+  labelEL.innerText = "Enter initials: ";
+  inputEL.setAttribute("type", "text");
+  inputEL.setAttribute("required", "");
+  inputEL.setAttribute("name", "initials");
+  divEL.appendChild(labelEL);
+  inputEL2.setAttribute("type", "submit");
+  inputEL2.className = "submit-score";
+  divEL2.appendChild(inputEL2);
+  labelEL.appendChild(inputEL);
+  formEL.appendChild(divEL);
+  formEL.appendChild(divEL2);
+  mainEL.appendChild(formEL);
+}
+
 startQuiz_btn.addEventListener("click", startQuiz);
+
+formEL.addEventListener("click", function (e) {
+  e.preventDefault();
+  if (e.target.matches(".submit-score")) {
+    localStorage.setItem(document.querySelector("input").value, count);
+    document.querySelector("input").value = "";
+    hrEL.remove();
+  }
+});
