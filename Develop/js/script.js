@@ -1,6 +1,5 @@
 const startQuiz_btn = document.querySelector(".btn-start");
 const submitBtn = document.querySelector("input");
-console.log(submitBtn);
 const questionEL = document.querySelector("h1");
 const timeCountEL = document.querySelector(".timeCount");
 const mainEL = document.querySelector("main");
@@ -11,6 +10,7 @@ const divEL2 = document.createElement("div");
 const labelEL = document.createElement("label");
 const inputEL = document.createElement("input");
 const inputEL2 = document.createElement("input");
+const pEL = document.createElement("p");
 
 const quizQuestions = [
   {
@@ -167,7 +167,7 @@ function nextQuestion(answer, questionCount) {
 
 function endQuiz() {
   questionEL.innerText = "All Done";
-  const pEL = document.createElement("p");
+
   pEL.innerText = `Your final sore is ${count}.`;
   mainEL.appendChild(pEL);
   mainEL.appendChild(hrEL);
@@ -193,6 +193,35 @@ formEL.addEventListener("click", function (e) {
   if (e.target.matches(".submit-score")) {
     localStorage.setItem(document.querySelector("input").value, count);
     document.querySelector("input").value = "";
+    pEL.remove();
     hrEL.remove();
+    formEL.remove();
+    questionEL.innerText = "High scores";
+
+    const olhighScoreEL = document.createElement("ol");
+    mainEL.appendChild(olhighScoreEL);
+
+    for ([key, score] of Object.entries(localStorage)) {
+      const liScoreLEL = document.createElement("li");
+      liScoreLEL.innerText = ` ${key}-${score}`;
+      olhighScoreEL.appendChild(liScoreLEL);
+    }
+
+    const divEL = document.createElement("div");
+    const goBtnEL = document.createElement("button");
+    goBtnEL.innerText = "Go back";
+    const clearBtnEL = document.createElement("button");
+    clearBtnEL.innerText = "Clear high Scores";
+    divEL.appendChild(goBtnEL);
+    divEL.appendChild(clearBtnEL);
+    mainEL.appendChild(divEL);
+
+    goBtnEL.addEventListener("click", function () {
+      location.reload();
+    });
+
+    clearBtnEL.addEventListener("click", function () {
+      localStorage.clear();
+    });
   }
 });
