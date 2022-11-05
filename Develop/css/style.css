@@ -4,6 +4,7 @@
   --font-family: "Roboto", sans-serif;
   --color-purple: #351c75;
   --color-light-purple: #b54be5;
+  --color-light-100: #d9d3e9;
   --color-white: #ffffff;
 }
 
@@ -22,6 +23,10 @@ html {
 body {
   font-family: var(--font-family);
   margin: 0 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
@@ -34,31 +39,57 @@ body {
 main {
   width: 100%;
   max-width: 80%;
-  height: 70vh;
+  height: 100%;
   margin: 10rem auto 0 auto;
+  padding-bottom: 3rem;
 }
 a {
   text-decoration: none;
 }
 
-ul {
-  list-style-type: none;
+hr {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+ol li {
+  background-color: #351c75;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+ol a {
+  color: var(--color-white);
 }
 
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 2rem 1rem 0;
 }
 
-h1 {
+input[name="initials"] {
+  width: 70%;
+  height: 2rem;
+}
+
+.center {
   text-align: center;
-  font-size: 3rem;
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 p {
-  font-size: 1.2rem;
-  text-align: center;
-  margin-top: 2rem;
+  font-size: 1.1rem;
   font-weight: 500;
 }
 
@@ -66,19 +97,38 @@ p {
   color: var(--color-light-purple);
 }
 
+.high-score-li {
+  background-color: var(--color-light-100);
+  font-weight: 600;
+}
+
 .btn {
   background-color: #351c75;
   color: #ffffff;
   font-size: 1.3rem;
-
+  padding: 0.8rem 1.5rem;
   border-radius: 8px;
+  border: none;
 }
 
+.btn-score {
+  margin-top: 3rem;
+}
+
+.btn-score:first-child {
+  margin-right: 2rem;
+}
 .btn-start {
   display: inline-block;
   margin-top: 2rem;
   left: 50%;
   transform: translateX(-50%);
   position: relative;
-  padding: 0.8rem 1.5rem;
+}
+
+@media (min-width: 575px) {
+  form {
+    flex-direction: row;
+    gap: 2rem;
+  }
 }

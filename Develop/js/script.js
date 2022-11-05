@@ -100,6 +100,7 @@ function startQuiz() {
 
   if (start) {
     console.log("Quiz started");
+    document.querySelector("h1").classList.remove("center");
     document.querySelector("main p").remove();
     document.querySelector(".btn-start").remove();
     // load first question in array:
@@ -123,20 +124,23 @@ function loadQueston(questionNumber) {
   });
 
   mainEL.appendChild(olEL);
+  let ansCount = 1;
   for ([key, ans] of Object.entries(quizQuestions[questionNumber].answers)) {
     const liEL = document.createElement("li");
     const aEL = document.createElement("a");
     aEL.setAttribute("href", "#");
     aEL.setAttribute("data-key", key);
-    aEL.innerText = ans;
+    liEL.setAttribute("data-key", key);
+    aEL.innerText = `${ansCount}. ${ans}`;
     liEL.appendChild(aEL);
     olEL.appendChild(liEL);
+    ansCount += 1;
   }
 }
 
 function checkAnswer(event, questionCount) {
   event.preventDefault();
-  if (event.target.nodeName === "A") {
+  if (event.target.nodeName === "LI" || "A") {
     if (
       Number(event.target.dataset.key) ===
       Number(quizQuestions[questionCount].correctAnswer)
@@ -166,8 +170,9 @@ function nextQuestion(answer, questionCount) {
 }
 
 function endQuiz() {
-  questionEL.innerText = "All Done";
+  questionEL.innerText = "All Done!";
 
+  pEL.classList.remove("center");
   pEL.innerText = `Your final sore is ${count}.`;
   mainEL.appendChild(pEL);
   mainEL.appendChild(hrEL);
@@ -196,22 +201,27 @@ formEL.addEventListener("click", function (e) {
     pEL.remove();
     hrEL.remove();
     formEL.remove();
+    document.querySelector("header").remove();
     questionEL.innerText = "High scores";
 
     const olhighScoreEL = document.createElement("ol");
     mainEL.appendChild(olhighScoreEL);
-
+    let sCount = 1;
     for ([key, score] of Object.entries(localStorage)) {
       const liScoreLEL = document.createElement("li");
-      liScoreLEL.innerText = ` ${key}-${score}`;
+      liScoreLEL.classList.add("high-score-li");
+      liScoreLEL.innerText = `${sCount}. ${key}-${score}`;
       olhighScoreEL.appendChild(liScoreLEL);
+      sCount += 1;
     }
 
     const divEL = document.createElement("div");
     const goBtnEL = document.createElement("button");
     goBtnEL.innerText = "Go back";
+    goBtnEL.classList.add("btn", "btn-score");
     const clearBtnEL = document.createElement("button");
     clearBtnEL.innerText = "Clear high Scores";
+    clearBtnEL.classList.add("btn", "btn-score");
     divEL.appendChild(goBtnEL);
     divEL.appendChild(clearBtnEL);
     mainEL.appendChild(divEL);
@@ -222,6 +232,7 @@ formEL.addEventListener("click", function (e) {
 
     clearBtnEL.addEventListener("click", function () {
       localStorage.clear();
+      location.reload();
     });
   }
 });
