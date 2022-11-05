@@ -113,8 +113,8 @@ function loadQueston(questionNumber) {
     questionEL.innerText = quizQuestions[questionNumber].question;
   } else {
     clearInterval(intervalID);
-    endQuiz();
 
+    endQuiz();
     return;
   }
 
@@ -172,22 +172,21 @@ function nextQuestion(answer, questionCount) {
 function endQuiz() {
   questionEL.innerText = "All Done!";
 
+  mainEL.appendChild(pEL);
   pEL.classList.remove("center");
   pEL.innerText = `Your final sore is ${count}.`;
-  mainEL.appendChild(pEL);
-  mainEL.appendChild(hrEL);
+
   labelEL.setAttribute("for", "initials");
   labelEL.innerText = "Enter initials: ";
   inputEL.setAttribute("type", "text");
-  inputEL.setAttribute("required", "");
   inputEL.setAttribute("name", "initials");
-  divEL.appendChild(labelEL);
-  inputEL2.setAttribute("type", "submit");
-  inputEL2.className = "submit-score";
-  divEL2.appendChild(inputEL2);
   labelEL.appendChild(inputEL);
-  formEL.appendChild(divEL);
-  formEL.appendChild(divEL2);
+
+  inputEL2.setAttribute("type", "submit");
+  inputEL2.className = "btn btn-submit";
+
+  formEL.appendChild(labelEL);
+  formEL.appendChild(inputEL2);
   mainEL.appendChild(formEL);
 }
 
@@ -195,7 +194,13 @@ startQuiz_btn.addEventListener("click", startQuiz);
 
 formEL.addEventListener("click", function (e) {
   e.preventDefault();
-  if (e.target.matches(".submit-score")) {
+
+  if (e.target.matches(".btn-submit")) {
+    if (document.querySelector("input").value === "") {
+      alert("Enter initials");
+      return;
+    }
+
     localStorage.setItem(document.querySelector("input").value, count);
     document.querySelector("input").value = "";
     pEL.remove();
