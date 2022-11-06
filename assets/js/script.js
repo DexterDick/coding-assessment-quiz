@@ -11,6 +11,8 @@ const labelEL = document.createElement("label");
 const inputEL = document.createElement("input");
 const inputEL2 = document.createElement("input");
 const pEL = document.createElement("p");
+const mainP = document.querySelector("main p");
+const mainOl = document.querySelector("main ol");
 
 const quizQuestions = [
   {
@@ -76,13 +78,10 @@ let count = 60;
 
 // 1. show landing page  set timer to zero
 // 2.  start quiz when start quiz button is clicked
-// 3. ininilize and start timmer and load first question
-// 4. choose answer. if correct display correct else wrong!
-// 5. display final score of timer
-// 6  submit and save to local storage final score
-// 7. display highscores - allow user to click go back button or clear high scores to remove high scores from local storage.
+startQuiz_btn.addEventListener("click", startQuiz);
 
 function startQuiz() {
+  // 3. ininilize and start timmer and load first question
   let questionCount = 0;
   start = true;
   intervalID = setInterval(startTimer, 1000);
@@ -109,6 +108,7 @@ function startQuiz() {
 }
 
 function loadQueston(questionNumber) {
+  // load questions if lenght of array is not equal to number of questions else end quiz
   if (quizQuestions.length !== questionNumber) {
     questionEL.innerText = quizQuestions[questionNumber].question;
   } else {
@@ -139,6 +139,7 @@ function loadQueston(questionNumber) {
 }
 
 function checkAnswer(event, questionCount) {
+  // 4. choose answer. if correct display correct else wrong!
   event.preventDefault();
   if (event.target.nodeName === "LI" || "A") {
     if (
@@ -155,6 +156,7 @@ function checkAnswer(event, questionCount) {
 }
 
 function nextQuestion(answer, questionCount) {
+  // got to  next question
   const h2El = document.createElement("h2");
   mainEL.appendChild(hrEL);
   h2El.innerText = answer;
@@ -170,6 +172,7 @@ function nextQuestion(answer, questionCount) {
 }
 
 function endQuiz() {
+  // 5. End quiz and display final score of timer
   questionEL.innerText = "All Done!";
 
   mainEL.appendChild(pEL);
@@ -190,7 +193,47 @@ function endQuiz() {
   mainEL.appendChild(formEL);
 }
 
-startQuiz_btn.addEventListener("click", startQuiz);
+function displayHighScores() {
+  // 7. display highscores - allow user to click go back button or clear high scores to remove high scores from local storage.
+  startQuiz_btn.remove();
+  mainP.remove();
+  pEL.remove();
+  hrEL.remove();
+  formEL.remove();
+  document.querySelector("header").remove();
+  questionEL.innerText = "High scores";
+
+  const olhighScoreEL = document.createElement("ol");
+  mainEL.appendChild(olhighScoreEL);
+  let sCount = 1;
+  for ([key, score] of Object.entries(localStorage)) {
+    const liScoreLEL = document.createElement("li");
+    liScoreLEL.classList.add("high-score-li");
+    liScoreLEL.innerText = `${sCount}. ${key}-${score}`;
+    olhighScoreEL.appendChild(liScoreLEL);
+    sCount += 1;
+  }
+
+  const divEL = document.createElement("div");
+  const goBtnEL = document.createElement("button");
+  goBtnEL.innerText = "Go back";
+  goBtnEL.classList.add("btn", "btn-score");
+  const clearBtnEL = document.createElement("button");
+  clearBtnEL.innerText = "Clear high Scores";
+  clearBtnEL.classList.add("btn", "btn-score");
+  divEL.appendChild(goBtnEL);
+  divEL.appendChild(clearBtnEL);
+  mainEL.appendChild(divEL);
+
+  goBtnEL.addEventListener("click", function () {
+    location.reload();
+  });
+
+  clearBtnEL.addEventListener("click", function () {
+    localStorage.clear();
+    location.reload();
+  });
+}
 
 formEL.addEventListener("click", function (e) {
   e.preventDefault();
@@ -200,44 +243,13 @@ formEL.addEventListener("click", function (e) {
       alert("Enter initials");
       return;
     }
-
+    // save quiz to localStorage
     localStorage.setItem(document.querySelector("input").value, count);
     document.querySelector("input").value = "";
-    pEL.remove();
-    hrEL.remove();
-    formEL.remove();
-    document.querySelector("header").remove();
-    questionEL.innerText = "High scores";
-
-    const olhighScoreEL = document.createElement("ol");
-    mainEL.appendChild(olhighScoreEL);
-    let sCount = 1;
-    for ([key, score] of Object.entries(localStorage)) {
-      const liScoreLEL = document.createElement("li");
-      liScoreLEL.classList.add("high-score-li");
-      liScoreLEL.innerText = `${sCount}. ${key}-${score}`;
-      olhighScoreEL.appendChild(liScoreLEL);
-      sCount += 1;
-    }
-
-    const divEL = document.createElement("div");
-    const goBtnEL = document.createElement("button");
-    goBtnEL.innerText = "Go back";
-    goBtnEL.classList.add("btn", "btn-score");
-    const clearBtnEL = document.createElement("button");
-    clearBtnEL.innerText = "Clear high Scores";
-    clearBtnEL.classList.add("btn", "btn-score");
-    divEL.appendChild(goBtnEL);
-    divEL.appendChild(clearBtnEL);
-    mainEL.appendChild(divEL);
-
-    goBtnEL.addEventListener("click", function () {
-      location.reload();
-    });
-
-    clearBtnEL.addEventListener("click", function () {
-      localStorage.clear();
-      location.reload();
-    });
+    displayHighScores();
   }
 });
+
+document
+  .querySelector(".high-scores")
+  .addEventListener("click", displayHighScores);
