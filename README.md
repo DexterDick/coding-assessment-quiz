@@ -1,4 +1,4 @@
-#coding-assessment-quiz
+# coding-assessment-quiz
 
 ## Description
 
@@ -16,10 +16,10 @@ The quiz ends when all questions are answered or timer reaches 0. five seconds i
 
 ## Screenshots
 
-[Start screen](./assets/images/quiz-1.png);
+![Start screen](./assets/images/quiz-1.png);
 
-[Question screen](./assets/images/quiz-2.png);
+![Question screen](./assets/images/quiz-2.png);
 
-[Done screen](./assets/images/quiz-3.png);
+![Done screen](./assets/images/quiz-3.png);
 
-[high score screen](./assets/images/quiz-4.png);
+![high score screen](./assets/images/quiz-4.png);
